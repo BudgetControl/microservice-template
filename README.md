@@ -28,6 +28,18 @@ This repository contains the code of microservice budgetcontrol template.
 - `task build:dev`: Install and build dev application.
 - `task build`: Install and build base application.
 
+### Test with FTP
+
+You can use an fake ftp docker server
+- docker run --rm -d --name ftpd_server -p 21:21 -p 30000-30009:30000-30009 -e FTP_USER_NAME=user -e FTP_USER_PASS=12345 -e FTP_USER_HOME=/home/user stilliard/pure-ftpd
+- docker network connect [network_name] ftpd_server
+
+### Test with mailhog service
+
+You can use an fake mailhog server
+- docker run --rm -d --name mailhog -p 8025:8025 -p 1025:1025 mailhog/mailhog
+- docker network connect [network_name] mailhog
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contribution Guidelines](CONTRIBUTING.md) for more information.
