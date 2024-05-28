@@ -47,3 +47,25 @@ Contributions are welcome! Please read our [Contribution Guidelines](CONTRIBUTIN
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## Debug
+```bash
+{
+    // Usare IntelliSense per informazioni sui possibili attributi.
+    // Al passaggio del mouse vengono visualizzate le descrizioni degli attributi esistenti.
+    // Per altre informazioni, visitare: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for Remote Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/var/www/workdir": "${workspaceRoot}",
+            },
+            "log": true, 
+        },
+    ]
+}
+```
