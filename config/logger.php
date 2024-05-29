@@ -32,14 +32,18 @@ switch(env('APP_LOG_LEVEL','debug')) {
 }
 
 //setup log with BetterStack
-$logger = new \Monolog\Logger(env('APP_NAME'));
-if(env('APP_ENV') == 'prod') {
-    $logger->pushHandler(new \Logtail\Monolog\LogtailHandler(env('LOGTAIL_API_KEY')));
-}
+$logName = env('APP_NAME','BudgetControl');
+$logger = new \Monolog\Logger(env('LOG_NAME', $logName));
 
 // log on FS
 $logPath = env('APP_LOG_PATH',__DIR__.'/../storage/logs/log-'.date("Ymd").'.log');
 $streamHandler = new \Monolog\Handler\StreamHandler($logPath, $logLevel);
-$formatter = new \Monolog\Formatter\SyslogFormatter();
+
+$formatter = new \Monolog\Formatter\LineFormatter('[%channel%][%level_name%] %message% %context% %extra%\n');
 $streamHandler->setFormatter($formatter);
 $logger->pushHandler($streamHandler);
+
+// log on Logtail only in prod
+if(env('APP_ENV') == 'prod') {
+    $logger->pushHandler(new \Logtail\Monolog\LogtailHandler(env('LOGTAIL_API_KEY'), $logLevel));
+}
