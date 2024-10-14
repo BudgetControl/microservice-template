@@ -34,11 +34,20 @@ You can use an fake ftp docker server
 - docker run --rm -d --name ftpd_server -p 21:21 -p 30000-30009:30000-30009 -e FTP_USER_NAME=user -e FTP_USER_PASS=12345 -e FTP_USER_HOME=/home/user stilliard/pure-ftpd
 - docker network connect [network_name] ftpd_server
 
+## Build dev enviroment
+- docker-compose -f docker-compose.yml -f -f docker-compose.db.yml up -d
+- docker container cp bin/apache/default.conf budgetcontrol-ms-authentication:/etc/apache2/sites-available/budgetcontrol.cloud.conf
+- docker container exec budgetcontrol-ms-authentication service apache2 restart
+
 ### Test with mailhog service
 
 You can use an fake mailhog server
 - docker run --rm -d --name mailhog -p 8025:8025 -p 1025:1025 mailhog/mailhog
 - docker network connect [network_name] mailhog
+
+## Run PHP Tests
+- docker exec budgetcontrol-ms-authentication bash -c "vendor/bin/phinx rollback -t 0 && vendor/bin/phinx migrate && vendor/bin/phinx seed:run" 
+- docker exec budgetcontrol-ms-authentication vendor/bin/phpunit test
 
 ## Contributing
 
