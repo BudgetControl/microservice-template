@@ -35,13 +35,17 @@ switch(env('APP_LOG_LEVEL','debug')) {
 $logName = env('APP_NAME','BudgetControl');
 $logger = new \Monolog\Logger(env('LOG_NAME', $logName));
 
-// log on FS
-$logPath = env('APP_LOG_PATH',__DIR__.'/../storage/logs/log-'.date("Ymd").'.log');
-$streamHandler = new \Monolog\Handler\StreamHandler($logPath, $logLevel);
+// log rotation
+$logPath = env('APP_LOG_PATH', __DIR__.'/../storage/logs/log.log');
+$rotatingFileHandler = new \Monolog\Handler\RotatingFileHandler($logPath, (int) env('APP_LOG_ROTATION', 7), $logLevel);
+$rotatingFileHandler->setFormatter($formatter); 
 
+// log on FS
 $formatter = new \Monolog\Formatter\LineFormatter('[%channel%][%level_name%] %message% %context% %extra%\n');
-$streamHandler->setFormatter($formatter);
-$logger->pushHandler($streamHandler);
+$formatter->setJsonPrettyPrint(true);
+$formatter->includeStacktraces(true);
+$rotatingFileHandler->setFormatter($formatter);
+$logger->pushHandler($rotatingFileHandler);
 
 // log on Logtail only in prod
 if(env('APP_ENV') == 'prod') {
