@@ -78,3 +78,10 @@ This project is licensed under the [MIT License](LICENSE).
     ]
 }
 ```
+
+## Usin Bref for deploy serverless
+- Add bref to composer composer require bref/bref:~2.4.1
+- Install serveless globally npm install -g serverless
+- Install plugin npm install serverless-dotenv-plugin
+- If nedded more php extension edit /php/conf.d/php.ini file
+- Run serverless deploy --stage dev | prod
